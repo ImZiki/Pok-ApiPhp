@@ -10,7 +10,7 @@
 <?php require_once 'header.php';?>
 <?php
 // Iniciar sesión si aún no se ha iniciado
-require_once 'auth.php';
+require_once './utils/auth.php';
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }

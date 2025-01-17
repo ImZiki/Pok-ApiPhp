@@ -8,10 +8,41 @@
 </head>
 <body>
 <?php require_once 'header.php';?>
+<?php
+// Iniciar sesión si aún no se ha iniciado
+require_once './utils/auth.php';
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $username = $_POST['username-input'];
+    $email = $_POST['email-input'];
+    $password = $_POST['password-input'];
+    $confirmPassword = $_POST['confirm-password-input'];
+
+    // Verificar si las contraseñas coinciden
+    if ($password === $confirmPassword) {
+        if (register($username, $email, $password)) {
+            // Redirigir a la página de login
+            header("location: login.php");
+            exit();
+        }
+    } else {
+        $_SESSION['error'] = "Las contraseñas no coinciden. Inténtalo de nuevo."; // Establecer mensaje de error
+    }
+}
+?>
 <div class="login-container">
     <form action="register.php" method="POST" class="login-form">
         <h2>Sign up</h2>
+
+        <!-- Mostrar mensaje de error si está presente en la sesión -->
+        <?php if (isset($_SESSION['error'])): ?>
+            <p class="error-message"><?php echo $_SESSION['error']; ?></p>
+            <?php unset($_SESSION['error']); // Eliminar el mensaje después de mostrarlo ?>
+        <?php endif; ?>
+
         <label for="username-input" class="form-label">Username</label>
         <input type="text" name="username-input" class="form-input" placeholder="Enter your username" required>
 
@@ -25,29 +56,10 @@
         <input type="password" name="confirm-password-input" class="form-input" placeholder="Confirm your password" required>
 
         <input type="submit" value="Register" class="form-submit">
+        <input type="reset" value="Clear" class="form-reset">
     </form>
 </div>
 
-<?php
-
-    require_once 'auth.php';
-    if($_SERVER["REQUEST_METHOD"] == "POST"){
-        $username = $_POST['username-input'];
-        $email = $_POST['email-input'];
-        $password = $_POST['password-input'];
-        $confirmPassword = $_POST['confirm-password-input'];
-
-        if ($password === $confirmPassword) {
-            if(register($username, $email, $password)){
-                // Redirigir a la página de login
-                header("location: login.php");
-                exit();
-            }
-
-        } else {
-            echo '<p style="color:red; text-align:center;">Passwords do not match!</p>';
-        }
-    }
-?>
 </body>
 </html>
+
