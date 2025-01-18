@@ -1,4 +1,10 @@
  <?php
+
+       // Evitar múltiples llamadas a session_start()
+       if (session_status() == PHP_SESSION_NONE) {
+           session_start();
+       }
+
         require_once './utils/apihandler.php';
         $response = getPokemon();
         $pokemon = $response["pokemon"];
