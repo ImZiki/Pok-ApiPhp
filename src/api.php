@@ -1,4 +1,4 @@
- <?php if( !headers_sent() && '' == session_id() ) {session_start();}
+ <?php
 
         require_once './utils/apihandler.php';
         $response = getPokemon();

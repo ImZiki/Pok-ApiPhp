@@ -1,18 +1,17 @@
 <?php
 // Iniciar sesión antes de cualquier salida
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
+
 require_once './utils/auth.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username-input'];
     $password = $_POST['password-input'];
     if (login($username, $password)) {
+        setcookie("username", $username, time() + (86400 * 30), "/");
         header("location: api.php");
         exit();
     } else {
-        $_SESSION['error'] = "Credenciales incorrectas. Inténtalo de nuevo.";
+        $error = "Credenciales incorrectas. Inténtalo de nuevo.";
     }
 }
 ?>
@@ -29,9 +28,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <div class="login-container">
     <form action="login.php" method="POST" class="login-form">
         <h2>Login</h2>
-        <?php if (isset($_SESSION['error'])): ?>
-            <p class="error-message"><?php echo $_SESSION['error']; ?></p>
-            <?php unset($_SESSION['error']); ?>
+        <?php if (isset($error)): ?>
+            <p class="error-message"><?php echo $error; ?></p>
+            <?php unset($error); ?>
         <?php endif; ?>
         <label for="username-input" class="form-label">Username</label>
         <input type="text" name="username-input" class="form-input" placeholder="Enter your username" required>
