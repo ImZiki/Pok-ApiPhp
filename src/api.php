@@ -1,3 +1,9 @@
+ <?php
+        require_once './utils/apihandler.php';
+        $response = getPokemon();
+        $pokemon = $response["pokemon"];
+        $headerColor = $response["color"];
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,12 +24,7 @@
     </div>
     <div class="divider"></div>
     <div class="card-section">
-    <?php
-        require_once './utils/apihandler.php';
-        $response = getPokemon();
-        $pokemon = $response["pokemon"];
-        $headerColor = $response["color"];
-    ?>
+   
         <div class="pokemon-card">
             <div class="header" style="background-color: <?= htmlspecialchars($headerColor, ENT_QUOTES, 'UTF-8') ?>;">
                 <img src="<?= htmlspecialchars($pokemon['sprite'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($pokemon['name'], ENT_QUOTES, 'UTF-8') ?>">
