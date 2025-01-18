@@ -1,9 +1,4 @@
-<?php
-// Evitar múltiples llamadas a session_start()
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
-?>
+
 <header>
     <div class="logo">
         <img src="../assets/img/logo.png" alt="PokéAPI Logo">
