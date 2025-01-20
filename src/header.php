@@ -8,4 +8,4 @@
     </nav>
 </header>
 
-<script src="./utils/header.js"></script>
+<script src="header.js"></script>
