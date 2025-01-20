@@ -1,20 +1,13 @@
-document.addEventListener("DOMContentLoaded", function () {
-    // Obtener el nombre del archivo actual
-    const currentPage = window.location.pathname.split("/").pop();
+document.addEventListener("DOMContentLoaded", async function () {
+    const currentPage = window.location.pathname.split("/").pop() || "index.php";
 
-    // Función para actualizar el menú de navegación
-    function updateHeader() {
-        let xhr = new XMLHttpRequest();
-        xhr.open("GET", "header-links.php?page=" + currentPage, true);
-        xhr.onload = function () {
-            if (xhr.status === 200) {
-                document.getElementById("nav-links").innerHTML = xhr.responseText;
-            } else {
-                console.error("Error al cargar los enlaces del header");
-            }
-        };
-        xhr.send();
+    try {
+        const response = await fetch("./header-links.php?page=" + currentPage);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        document.getElementById("nav-links").innerHTML = await response.text();
+    } catch (error) {
+        console.error("Error al cargar los enlaces del header:", error);
     }
-
-    updateHeader();
 });
